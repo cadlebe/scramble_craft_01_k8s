@@ -2,32 +2,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: minecraft-server
+  name: scramblecraft01-server
   namespace: minecraft
   labels:
-    app: minecraft-server
+    app: scramblecraft01-server
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: minecraft-server
+      app: scramblecraft01-server
   template:
     metadata:
       labels:
-        app: minecraft-server
+        app: scramblecraft01-server
     spec:
       volumes:
-      - name: minecraft-data
+      - name: scramblecraft01-data
         persistentVolumeClaim:
-          claimName: minecraft-data-pvc
+          claimName: scramblecraft01-data-pvc
       containers:
-      - name: minecraft-server
-        image: itzg/minecraft-server:latest
+      - name: scramblecraft01-server
+        image: itzg/minecraft-server:java8
         resources:
           limits:
-            memory: 2Gi
+            memory: 8Gi
           requests:
-            memory: 1.5Gi
+            memory: 4Gi
         env:
           - name:  EULA
             value: 'TRUE'
@@ -35,11 +35,21 @@ spec:
             value: survival
           - name: MOTD
             value: Welcome to the server!
+          - name: TYPE
+            value: FORGE
+          - name: VERSION
+            value: 1.12.2
+          - name: FORGE_VERSION
+            value: 14.23.5.2854
+          - name: PVP
+            value: 'FALSE'
+          - name: MEMORY
+            value: 6G
         ports:
         - containerPort: 25565
-          name: minecraft
+          name: scramblecraft01
         volumeMounts:
-          - name: minecraft-data
+          - name: scramblecraft01-data
             mountPath:  /data
       dnsPolicy: "None"
       dnsConfig:
